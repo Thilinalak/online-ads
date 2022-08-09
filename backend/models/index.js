@@ -41,7 +41,7 @@ db.sequelize.sync({force : false})
 // 1 : M relation (user has many items)
 db.users.hasMany(db.items,{
     foreignKey: 'user_id',
-    as: 'user'
+    as: 'items'
 })
 db.items.belongsTo(db.users,{
     foreignKey: 'user_id',
@@ -51,8 +51,7 @@ db.items.belongsTo(db.users,{
 
 // 1:M Relation (item has many images)
 db.items.hasMany(db.images,{
-    foreignkey: 'item_id',
-    as: 'item'
+    as: 'images'
 })
 db.images.belongsTo(db.items, {
     foreignkey: 'item_id',

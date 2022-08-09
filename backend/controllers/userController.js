@@ -33,6 +33,7 @@ exports.registerUser = async (req, res) => {
 
     if (newUser) {
       res.status(201).json({
+        message: 'User Registered Successfully',
         user: newUser,
         userToken: generateToken(newUser.id),
       });
@@ -54,7 +55,7 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne({ where: { email: username } });
     if (user && (await bcrypt.compare(password, user.password))) {
       res.status(200).json({
-        message: "User Athenticated !",
+        message: "User Athenticated and LoggedIn !",
         user: user,
         userToken: generateToken(user.id),
       });
