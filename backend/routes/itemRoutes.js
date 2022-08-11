@@ -11,7 +11,8 @@ router.get('/select-post-to-update/:itemid',protect, sellerItemController.viewTo
 router.put('/update-post/:itemid',protect, sellerItemController.updateSelectedItem)
 
 // Normal User Routes
-router.get('',normalUserController.showAllAds)
-router.get('/:itemid',normalUserController.viewSingleAd)
+router.get('/ads',normalUserController.showAllAds)
+router.get('/ads/:itemid',normalUserController.viewSingleAd)
+router.get('/category/:categoryid',normalUserController.adFilterByCategory)
 
 module.exports = router
