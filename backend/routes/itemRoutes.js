@@ -6,13 +6,15 @@ const protect = require('../middleware/authMiddleware')
 
 // Seller Routes
 router.post('/add-post',protect,sellerItemController.uploadImages, sellerItemController.addPost)
-router.get('/my-posts',protect, sellerItemController.myPosts)
-router.get('/select-post-to-update/:itemid',protect, sellerItemController.viewToUpdateSelectedItem)
-router.put('/update-post/:itemid',protect, sellerItemController.updateSelectedItem)
+router.get('/my-ads',protect, sellerItemController.myAds)
+router.get('/select-ad-to-update/:itemid',protect, sellerItemController.viewToUpdateSelectedAd)
+router.put('/update-ad/:itemid',protect, sellerItemController.updateSelectedAd)
+router.put('/delete-ad/:itemid',protect, sellerItemController.deleteSelectedAd)
 
 // Normal User Routes
 router.get('/ads',normalUserController.showAllAds)
 router.get('/ads/:itemid',normalUserController.viewSingleAd)
-router.get('/category/:categoryid',normalUserController.adFilterByCategory)
+router.get('/ads/category/:categoryid',normalUserController.adsFilterByCategory)
+router.post('/ads/search',normalUserController.searchAds)
 
 module.exports = router

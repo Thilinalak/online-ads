@@ -30,19 +30,27 @@ exports.addPost = async(req , res) =>{
         })
         if(newItem){
             // Save Images
+            let images = []
             req.files.map(img=>{
-                 db.images.create({
+                 const image = {
                     imageURL: img.path,
                     itemId: newItem.id,
-                })
+                }
+                images.push(image)
             })
-            
-            if(true){
-                res.status(201).json({
-                    message: 'Your Item Successfully Posted !',
+
+            await db.images.bulkCreate(images)
+            .then( () => {
+               res.status(201).json({
+                    message: 'Your Ad Successfully Posted !',
                     item: newItem,
                 }) 
-            }
+                
+            })
+            .catch(() => {
+                res.status(400).json({Error : 'Item not Posted!'})
+            })
+            
              
         }else{
             res.status(400).json({Error : 'Item not Posted!'})
@@ -75,9 +83,9 @@ exports.uploadImages = multer({
     }
 }).array('imageURL',3)
 
-// @Decs Get all posts of seller
-// @Route GET /api/items/my-posts
-exports.myPosts = async(req, res)=>{
+// @Decs Get all ads of seller
+// @Route GET /api/items/my-ads
+exports.myAds = async(req, res)=>{
 
     const allMyPosts = await db.items.findAll({ 
         where : { 
@@ -88,10 +96,9 @@ exports.myPosts = async(req, res)=>{
     : res.status(404).json({Error : `You haven't Posted any Ads !` })
 }
 
-// @Decs View seller selected posts to update
-// @Route GET /api/items/select-post-to-update/:itemid
-exports.viewToUpdateSelectedItem = async(req, res)=>{
-console.log(req.params.itemid);
+// @Decs View seller selected ad to update
+// @Route GET /api/items/select-ad-to-update/:itemid
+exports.viewToUpdateSelectedAd = async(req, res)=>{
 
     const item = await db.items.findOne({
         where: {id: req.params.itemid},
@@ -102,9 +109,9 @@ console.log(req.params.itemid);
     : res.status(404).json({Error : `You haven't Selected any Ad to update !` })
 }
 
-// @Decs  Update selected post
-// @Route PUT /api/items/update-post/:itemid
-exports.updateSelectedItem = async(req, res)=>{
+// @Decs  Update selected Ad
+// @Route PUT /api/items/update-ad/:itemid
+exports.updateSelectedAd = async(req, res)=>{
 console.log(req.params.itemid);
 console.log(req.body);
 
@@ -125,6 +132,22 @@ console.log(req.body);
     updatedItem ? res.status(200).json({message: 'You have Successfully Update your ad', Ad: updatedItem})
     : res.status(404).json({Error : `Not Updated !` })
     
+}
+
+
+// @Decs  Delete selected Ad
+// @Route PUT /api/items/delete-ad/:itemid
+exports.deleteSelectedAd = async(req, res)=>{
+    console.log(req.params.itemid);
+
+    await db.items.update({isActive : false},{ 
+        where : { id : req.params.itemid}
+    }).then( () => {
+        res.status(200).json({message: 'You have Successfully Deleted your Ad'})
+    }).catch(() => {
+        res.status(404).json({Error : `Not Deleted !` })
+    })
+
 }
 
 

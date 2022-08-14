@@ -16,7 +16,7 @@ app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/items', require('./routes/itemRoutes'))
 
 // Normal user 
-app.use('/', require('./routes/itemRoutes'))
+app.use('/api', require('./routes/itemRoutes'))
 
 // Static uploadImage Folder
 app.use('./uploadImages', express.static('./uploadImages'))
