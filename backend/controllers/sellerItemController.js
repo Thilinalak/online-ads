@@ -33,7 +33,7 @@ exports.addPost = async(req , res) =>{
             let images = []
             req.files.map(img=>{
                  const image = {
-                    imageURL: img.filename,
+                    imageURL: 'uploadImages/'+ img.filename,
                     itemId: newItem.id,
                 }
                 images.push(image)
