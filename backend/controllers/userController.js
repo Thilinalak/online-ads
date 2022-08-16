@@ -4,8 +4,9 @@ const jwt = require("jsonwebtoken");
 
 const User = db.users;
 
-// @Desc Register User
-// @Route POST /api/users/register
+// @Desc    Register User
+// @Method  POST
+// @Route   /api/users/register
 exports.registerUser = async (req, res) => {
   const { fname, mobile, city, username, password } = req.body;
 
@@ -43,8 +44,9 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// @Desc Login user
-// @Route POST /api/users/login
+// @Desc    Login user
+// @Method  POST
+// @Route   /api/users/login
 exports.loginUser = async (req, res) => {
   const { username, password } = req.body;
   console.log(username, password);
@@ -52,11 +54,18 @@ exports.loginUser = async (req, res) => {
     res.status(400).json({ Error: "Both Fields Are Required !" });
   } else {
     // Check User from DB
-    const user = await User.findOne({ where: { email: username } });
+    const user = await User.findOne({ 
+      where: { email: username },
+    });
     if (user && (await bcrypt.compare(password, user.password))) {
+
+      const userinfo = await User.findOne({ 
+        where: { id: user.id },
+        attributes : {exclude: ['password']}
+      });
       res.status(200).json({
         message: "User Athenticated and LoggedIn !",
-        user: user,
+        user: userinfo,
         userToken: generateToken(user.id),
       });
     } else {
