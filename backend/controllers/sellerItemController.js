@@ -161,15 +161,13 @@ exports.updateSelectedAd = async(req, res)=>{
 // @Route   /api/items/update-image/:imageid
 exports.updateSelectedImage = async(req, res)=>{
 
-    await db.images.update({imageURL :req.files[0].path},{ 
+    const imge = await db.images.update({imageURL :'uploadImages/'+req.files[0].filename},{ 
         where : { id : req.params.imageid}
     })
-    .then(result => {
-        res.status(200).json({message: 'You have Successfully Updated your Image', image: result})
-    }).catch(err =>{
-        console.log(err);
+    imge ?
+        res.status(200).json({message: 'You have Successfully Updated your Image',})
+    :
         res.status(404).json({Error : `Not Updated !` })
-    })
 }
 
 // @Desc    Delete selected Ad

@@ -33,9 +33,13 @@ exports.registerUser = async (req, res) => {
     });
 
     if (newUser) {
+      const userinfo = await User.findOne({ 
+        where: { id: newUser.id },
+        attributes : {exclude: ['password']}
+      });
       res.status(201).json({
         message: 'User Registered Successfully',
-        user: newUser,
+        user: userinfo,
         userToken: generateToken(newUser.id),
       });
     } else {
